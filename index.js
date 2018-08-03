@@ -25,8 +25,13 @@ let settings = {
 
 failedSetup = false
 
-toggleFlash = (value) => {flash?flash.writeSync(value):log(chalk.black.bgCyan(`Flash pin ${value?"on":"off"}`))}
-toggleCamera = (value) => {camera?camera.writeSync(value):log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
+toggleFlash = (value) => {
+    flash&&flash.writeSync(value)
+    !flash&&log(chalk.black.bgCyan(`Flash pin ${value?"on":"off"}`))
+}
+toggleCamera = (value) => {
+    camera&&camera.writeSync(value)
+    camera&&log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
 
 triggerFlash = ({highTime}) => {
     toggleFlash(inverse?0:1)
