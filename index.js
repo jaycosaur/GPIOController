@@ -3,8 +3,6 @@ const timer = new NanoTimer();
 const chalk = require('chalk');
 const log = console.log;
 
-let inverse = true
-
 let flash = undefined
 let camera = undefined
 log(chalk.black.bgGreen(`To run with non-default timings append the start command with additional process arguments of:\n\nnpm start CYCLE_DELAY=2s PIN_HIGH_OFFSET=500u PIN_HIGH_DURATION=200u\n`))
@@ -20,27 +18,22 @@ try {
 }
 
 let settings = {
-
+    
 }
 
 failedSetup = false
 
-toggleFlash = (value) => {
-    flash&&flash.writeSync(value)
-    !flash&&log(chalk.black.bgCyan(`Flash pin ${value?"on":"off"}`))
-}
-toggleCamera = (value) => {
-    camera&&camera.writeSync(value)
-    !camera&&log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
+toggleFlash = (value) => {flash&&flash.writeSync(value);log(chalk.black.bgCyan(`Flash pin ${value?"on":"off"}`))}
+toggleCamera = (value) => {camera&&camera.writeSync(value);log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
 
 triggerFlash = ({highTime}) => {
-    toggleFlash(0)
-    timer.setTimeout(toggleFlash, 1, highTime)
+    toggleFlash(1)
+    timer.setTimeout(toggleFlash, 0, highTime)
 }
 
 triggerCamera = ({highTime}) => {
-    toggleCamera(1)
-    timer.setTimeout(toggleCamera, 0, highTime)
+    toggleCamera(0)
+    timer.setTimeout(toggleCamera, 1, highTime)
 }
 
 process.argv.slice(2).forEach((val) => {
