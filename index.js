@@ -1,5 +1,10 @@
 const NanoTimer = require('nanotimer');
 const timer = new NanoTimer();
+const flashTimer = new NanoTimer();
+const cameraTimer = new NanoTimer();
+const cycleTimer = new NanoTimer();
+const offsetTimer = new NanoTimer();
+
 const chalk = require('chalk');
 const log = console.log;
 
@@ -23,17 +28,40 @@ let settings = {
 
 failedSetup = false
 
-toggleFlash = (value) => {flash&&flash.writeSync(value);log(chalk.black.bgCyan(`Flash pin ${value?"on":"off"}`))}
-toggleCamera = (value) => {camera&&camera.writeSync(value);log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
+toggleFlashOn = (value) => {
+    console.log("17o")
+    flash&&flash.write(value, ()=> {
+        console.time('DELAY');
+        console.time('17-PEAK');
+        console.log("17c")
+    });
+}
+
+toggleFlashOff = (value) => {
+    flash&&flash.write(value, ()=> console.timeEnd('17-PEAK'));
+}
+
+toggleCameraOn = (value) => {
+    console.log("22o")
+    camera&&camera.write(value, ()=> {
+        console.time('22-PEAK')
+        console.timeEnd('DELAY')
+        console.log("22c")
+    });
+}
+
+toggleCameraOff = (value) => {
+    camera&&camera.write(value, ()=> console.timeEnd('22-PEAK'));
+}
 
 triggerFlash = ({highTime}) => {
-    toggleFlash(1)
-    timer.setTimeout(toggleFlash, 0, highTime)
+    toggleFlashOn(1)
+    timer.setTimeout(()=>{toggleFlashOff(0)}, '', highTime)
 }
 
 triggerCamera = ({highTime}) => {
-    toggleCamera(0)
-    timer.setTimeout(toggleCamera, 1, highTime)
+    toggleCameraOn(false)
+    timer.setTimeout(()=>{toggleCameraOff(1)}, '', highTime)
 }
 
 process.argv.slice(2).forEach((val) => {
@@ -47,14 +75,29 @@ process.argv.slice(2).forEach((val) => {
 const main = () => {
     let CYCLE_DELAY = settings.CYCLE_DELAY||'5s'
     let PIN_HIGH_OFFSET = settings.PIN_HIGH_OFFSET||'250u'
-    let PIN_HIGH_DURATION = settings.PIN_HIGH_DURATION||'500u'
+    let PIN_HIGH_DURATION = settings.PIN_HIGH_DURATION||'50m'
 
     log(chalk.yellow(`\n**** SETTINGS ****\n\nDELAY_BETWEEN_CYCLES = ${CYCLE_DELAY}\nFLASH_CAMERA_OFFSET = ${PIN_HIGH_OFFSET}\nPIN_HIGH_DURATION = ${PIN_HIGH_DURATION}`))
     log(chalk.green('\nProgram start...\n'))
 
-    timer.setInterval(()=>{
-        triggerFlash({highTime: PIN_HIGH_DURATION})
-        timer.setTimeout(()=>triggerCamera({highTime: PIN_HIGH_DURATION}),'',PIN_HIGH_OFFSET)
+    cycleTimer.setInterval(()=>{
+        console.time('17-PIN_LAG')
+        flash.write(1, ()=> {
+            console.timeEnd('17-PIN_LAG')
+            console.time('DELAY');
+            console.time('17-PEAK');
+            flashTimer.setTimeout(()=>{flash.write(0, () => console.timeEnd('17-PEAK'));}, '', PIN_HIGH_DURATION)
+            
+        })
+        offsetTimer.setTimeout(()=>{
+            console.time('22-PIN_LAG')
+            camera.write(0, ()=> {
+                console.timeEnd('22-PIN_LAG')
+                console.timeEnd('DELAY');
+                console.time('22-PEAK');
+                cameraTimer.setTimeout(()=>{camera.write(1, () => console.timeEnd('22-PEAK'));}, '', PIN_HIGH_DURATION)
+            });
+        },'',PIN_HIGH_OFFSET)
     },'', CYCLE_DELAY)
 }
 
