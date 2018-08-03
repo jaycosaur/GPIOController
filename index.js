@@ -31,16 +31,16 @@ toggleFlash = (value) => {
 }
 toggleCamera = (value) => {
     camera&&camera.writeSync(value)
-    camera&&log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
+    !camera&&log(chalk.black.bgMagenta(`Camera pin ${value?"on":"off"}`))}
 
 triggerFlash = ({highTime}) => {
-    toggleFlash(inverse?0:1)
-    timer.setTimeout(toggleFlash, inverse?1:0, highTime)
+    toggleFlash(0)
+    timer.setTimeout(toggleFlash, 1, highTime)
 }
 
 triggerCamera = ({highTime}) => {
-    toggleCamera(inverse?0:1)
-    timer.setTimeout(toggleCamera, inverse?1:0, highTime)
+    toggleCamera(1)
+    timer.setTimeout(toggleCamera, 0, highTime)
 }
 
 process.argv.slice(2).forEach((val) => {
