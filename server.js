@@ -34,9 +34,9 @@ app.get('/gps-coords', function (req, res) {
 })
 
 app.get('/status', function (req, res) {
-    res.send('OK')
+    res.send(new Date().toISOString())
  })
  
-app.listen(8080, "localhost",()=>{
-    console.log(chalk.yellow("Listening on localhost:8080"))
+app.listen(config.SERVER_PORT, ()=>{
+    console.log(chalk.yellow(`Listening on localhost:${config.SERVER_PORT}`))
 })
