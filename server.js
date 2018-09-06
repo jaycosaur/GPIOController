@@ -37,6 +37,6 @@ app.get('/status', function (req, res) {
     res.send(new Date().toISOString())
  })
  
-app.listen(config.SERVER_PORT, ()=>{
-    console.log(chalk.yellow(`Listening on localhost:${config.SERVER_PORT}`))
+app.listen(config.SERVER_PORT, config.HOST, ()=>{
+    console.log(chalk.yellow(`Listening on ${config.HOST}:${config.SERVER_PORT}`))
 })
