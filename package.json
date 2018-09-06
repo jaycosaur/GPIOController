@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "pm2 start server.js"
+    "server": "pm2 start server.js && pm2 show server && pm2 logs server",
+    "kill": "pm2 stop all"
   },
   "author": "",
   "license": "ISC",
