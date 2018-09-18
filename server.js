@@ -41,15 +41,15 @@ listener.connect(function() {
 });
 
 app.get('/trigger-far', async function (req, res) {
-    await farTrigger.trigger(()=>res.send('OK'))
+    await farTrigger.trigger((type)=>res.send(type))
 })
 
 app.get('/trigger-close', async function (req, res) {
-    await closeTrigger.trigger(()=>res.send('OK'))
+    await closeTrigger.trigger((type)=>res.send(type))
 })
 
 app.get('/trigger-truck', async function (req, res) {
-    await truckTrigger.trigger(()=>res.send('OK'))
+    await truckTrigger.trigger((type)=>res.send(type))
 })
 
 app.get('/gps-coords', function (req, res) {
