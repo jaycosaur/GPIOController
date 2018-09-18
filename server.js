@@ -51,7 +51,7 @@ app.get('/trigger-truck', async function (req, res) {
 app.get('/gps-coords', function (req, res) {
    if(listener.isConnected()){
     listener.watch()
-    listener.onEvent('TPV', (res)=>console.log(res))
+    listener.on('TPV', (res)=>console.log(res))
    }
    res.send('Hello World')
 })
