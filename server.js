@@ -33,7 +33,7 @@ var listener = new gpsd.Listener({
 });
 
 listener.connect(function() {
-    console.log('Connected');
+    console.log('GPS IS CONNECTED');
     listener.watch()
     listener.on('TPV', (res)=>{
         GPS_RESULTS = res
