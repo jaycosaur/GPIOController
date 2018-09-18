@@ -6,6 +6,7 @@ class MockTrigger {
 
     }
     write(input, cb){
+        console.log("MOCK MODE")
         cb(false)
     }
 }
@@ -28,7 +29,6 @@ class CameraTrigger {
 
     trigger(cb) {
         return this.trig.write(this.inverse?0:1, (state)=> {
-            console.log(state===false?"MOCK":"PIN")
             this.timer.setTimeout(()=>{this.trig.write(this.inverse?1:0, () => cb())}, '', this.pinHighDuration)
         })
     }
