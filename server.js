@@ -3,6 +3,8 @@ const chalk = require('chalk');
 
 var config = require('./config')
 var CameraTrigger = require('./CameraTrigger')
+var gpsd = require('node-gpsd')
+
 
 const farTrigger = new CameraTrigger({pin: config.FAR_TRIGGER_PIN, pinHighDuration: config.PIN_HIGH_DURATION, inverse: false})
 const closeTrigger = new CameraTrigger({pin: config.CLOSE_TRIGGER_PIN, pinHighDuration: config.PIN_HIGH_DURATION, inverse: false})
