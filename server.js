@@ -19,6 +19,8 @@ const logger = (req, res, next) => {
 
 app.use(logger)
 
+let GPS_RESULTS = undefined
+
 var listener = new gpsd.Listener({
     port: 2947,
     hostname: 'localhost',
@@ -34,8 +36,13 @@ listener.connect(function() {
     console.log('Connected');
 });
 
+if(listener.isConnected()){
+    listener.watch()
+    listener.on('TPV', (res)=>{
+        GPS_RESULTS = res
+    })
+}
 
- 
 app.get('/trigger-far', async function (req, res) {
     await farTrigger.trigger(()=>res.send('OK'))
 })
@@ -49,11 +56,7 @@ app.get('/trigger-truck', async function (req, res) {
 })
 
 app.get('/gps-coords', function (req, res) {
-   if(listener.isConnected()){
-    listener.watch()
-    listener.on('TPV', (res)=>console.log(res))
-   }
-   res.send('Hello World')
+   res.send(GPS_RESULTS)
 })
 
 app.get('/status', function (req, res) {
