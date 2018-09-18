@@ -18,6 +18,7 @@ class CameraTrigger {
         }
         catch (e) {
             log("SCRIPT DOES NOT HAVE ACCESS TO GPIO MODULE, FALLING BACK TO SIMULATION - CONSOLE LOGS ONLY")
+            console.log(e)
             this.trig = new MockTrigger(pin, 'out');
         }
         this.timer = new NanoTimer()
