@@ -34,14 +34,11 @@ var listener = new gpsd.Listener({
 
 listener.connect(function() {
     console.log('Connected');
-});
-
-if(listener.isConnected()){
     listener.watch()
     listener.on('TPV', (res)=>{
         GPS_RESULTS = res
     })
-}
+});
 
 app.get('/trigger-far', async function (req, res) {
     await farTrigger.trigger(()=>res.send('OK'))
