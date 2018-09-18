@@ -16,6 +16,7 @@
     "express": "^4.16.3",
     "keypress": "^0.2.1",
     "nanotimer": "^0.3.15",
+    "node-gpsd": "^0.3.0",
     "onoff": "^3.2.1"
   }
 }
