@@ -56,6 +56,7 @@ app.get('/trigger-truck', async function (req, res) {
 })
 
 app.get('/gps-coords', function (req, res) {
+    console.log(GPS_RESULTS)
    res.send(GPS_RESULTS)
 })
 
