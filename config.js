@@ -1,5 +1,5 @@
 exports.FAR_TRIGGER_PIN = 17
-exports.CLOSE_TRIGGER_PIN = 21
+exports.CLOSE_TRIGGER_PIN = 22
 exports.TRUCK_TRIGGER_PIN = 23
 exports.PIN_HIGH_DURATION = "50m"
 exports.SERVER_PORT=8000
