@@ -10,6 +10,10 @@ const farTrigger = new CameraTrigger({pin: config.FAR_TRIGGER_PIN, pinHighDurati
 const closeTrigger = new CameraTrigger({pin: config.CLOSE_TRIGGER_PIN, pinHighDuration: config.PIN_HIGH_DURATION, inverse: false})
 const truckTrigger = new CameraTrigger({pin: config.TRUCK_TRIGGER_PIN, pinHighDuration: config.PIN_HIGH_DURATION, inverse: false})
 
+console.log("FAR: ",  config.FAR_TRIGGER_PIN)
+console.log("CLOSE: ",  config.CLOSE_TRIGGER_PIN)
+console.log("TRUCK: ",  config.TRUCK_TRIGGER_PIN)
+
 var app = express()
 
 const logger = (req, res, next) => {
