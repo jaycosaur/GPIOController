@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Server Tester</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+      class TestAction extends React.Component {
+        state = {
+          isLoading: false,
+          response: null
+        }
+        testAction = () => {
+          this.setState({
+            isLoading: true,
+            response: null
+          })
+          fetch(`${this.props.action}`, {
+            method: "get"
+          }).then(res=>res.json())
+          .then(res=>this.setState({
+            isLoading: false,
+            response: res
+          })).catch(err=>{
+            this.setState({
+              isLoading: false,
+              response: err.message
+            })
+          })
+        }
+        render() {
+          const { name } = this.props
+          return (
+            <div style={{border: "1px solid #ccc", borderRadius: 5, margin: 12, padding: 16, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+              <button 
+                onClick={this.testAction} 
+                disabled={this.state.isLoading}>
+                {name}
+              </button>
+              <div>
+                {this.state.response}
+              </div>
+            </div>
+          )
+        }
+      }
+
+      class App extends React.Component {
+        render() {
+          const actions = [
+            {
+              name: "Status Test",
+              path: "http://localhost:8000/status"
+            },
+            {
+              name: "GPS TEST",
+              path: "http://localhost:8000/gps-coords"
+            },
+            {
+              name: "Trigger Far",
+              path: "http://localhost:8000/trigger-far"
+            },
+            {
+              name: "Trigger Close",
+              path: "http://localhost:8000/trigger-close"
+            },
+            {
+              name: "Trigger Truck",
+              path: "http://localhost:8000/trigger-truck"
+            }
+            ,
+            {
+              name: "Trigger Far With Flash",
+              path: "http://localhost:8000/trigger-far-flash"
+            },
+            {
+              name: "Trigger Close With Flash",
+              path: "http://localhost:8000/trigger-close-flash"
+            },
+            {
+              name: "Trigger Truck With Flash",
+              path: "http://localhost:8000/trigger-truck-flash"
+            },
+            {
+              name: "Trigger All",
+              path: "http://localhost:8000/trigger-all"
+            },
+            {
+              name: "Trigger All with Flash",
+              path: "http://localhost:8000/trigger-all-flash"
+            },
+            
+          ]
+          return (
+            <div className="root" style={{
+              padding: 64,
+              display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"
+            }}>
+              {actions.map((action,i)=><TestAction key={i} name={action.name} action={action.path} />)}
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(<App />,document.getElementById('root'));
+    </script>
+  </body>
+</html>
