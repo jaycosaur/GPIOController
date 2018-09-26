@@ -56,6 +56,13 @@ app.get('/trigger-truck', async function (req, res) {
     await truckTrigger.trigger(()=>res.send("OK"))
 })
 
+app.get('/trigger-all', async function (req, res) {
+    await farTrigger.trigger(()=>null)
+    await closeTrigger.trigger(()=>null)
+    await truckTrigger.trigger(()=>null)
+    res.send('done')
+})
+
 app.get('/gps-coords', function (req, res) {
    res.send(GPS_RESULTS)
 })
