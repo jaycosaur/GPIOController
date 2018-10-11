@@ -91,6 +91,7 @@ app.get('/trigger-close-flash', async function (req, res) {
     } else {
         closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH"))
     } */
+    closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH"))
     res.send("OK")
 })
 
