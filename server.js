@@ -32,6 +32,7 @@ app.use(logger)
 
 let GPS_RESULTS = undefined
 let DELAY_MODE = 'delay'
+let DELAY_AMOUNT = 100
 
 var listener = new gpsd.Listener({
     port: 2947,
@@ -96,7 +97,7 @@ app.get('/trigger-close-flash', async function (req, res) {
 app.get('/trigger-truck-flash', async function (req, res) {
     truckTriggerFlash.trigger(()=>console.log(chalk.blue("TRIGGERED FAR WITH FLASH")))
     if (DELAY_MODE === "delay"){
-        setTimeout(()=>closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH")),200)
+        setTimeout(()=>closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH")),DELAY_AMOUNT)
     } else {
         closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH"))
     }
