@@ -87,7 +87,7 @@ app.get('/trigger-far-flash', async function (req, res) {
 app.get('/trigger-close-flash', async function (req, res) {
     await closeTriggerFlash.trigger(()=>res.send("OK"))
     if (MODE === "delay"){
-        setTimeout(()=>closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH")))
+        setTimeout(()=>closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH")),200)
     } else {
         closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH"))
     }
