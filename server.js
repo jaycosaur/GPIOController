@@ -31,6 +31,7 @@ const logger = (req, res, next) => {
 app.use(logger)
 
 let GPS_RESULTS = undefined
+let DELAY_MODE = 'delay'
 
 var listener = new gpsd.Listener({
     port: 2947,
@@ -51,12 +52,23 @@ listener.connect(function() {
     })
 });
 
+app.get('/toggle-close-mode/delay', async function (req, res) {
+    DELAY_MODE = 'delay'
+    res.send(DELAY_MODE)
+})
+
+app.get('/toggle-close-mode/calc', async function (req, res) {
+    DELAY_MODE = 'calc'
+    res.send(DELAY_MODE)
+})
+
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/trigger-far', async function (req, res) {
-    await farTrigger.trigger(()=>res.send("OK"))
+    farTrigger.trigger(()=>console.log(chalk.blue("TRIGGERED FAR")))
+    res.send("OK")
 })
 
 app.get('/trigger-close', async function (req, res) {
@@ -68,11 +80,18 @@ app.get('/trigger-truck', async function (req, res) {
 })
 
 app.get('/trigger-far-flash', async function (req, res) {
-    await farTriggerFlash.trigger(()=>res.send("OK"))
+    farTriggerFlash.trigger(()=>console.log(chalk.blue("TRIGGERED FAR WITH FLASH")))
+    res.send("OK")
 })
 
 app.get('/trigger-close-flash', async function (req, res) {
     await closeTriggerFlash.trigger(()=>res.send("OK"))
+    if (MODE === "delay"){
+        setTimeout(()=>closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH")))
+    } else {
+        closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH"))
+    }
+    res.send("OK")
 })
 
 app.get('/trigger-truck-flash', async function (req, res) {
