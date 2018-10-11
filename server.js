@@ -81,11 +81,6 @@ app.get('/trigger-truck', async function (req, res) {
 
 app.get('/trigger-far-flash', async function (req, res) {
     farTriggerFlash.trigger(()=>console.log(chalk.blue("TRIGGERED FAR WITH FLASH")))
-    if (MODE === "delay"){
-        setTimeout(()=>closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH")),200)
-    } else {
-        closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH"))
-    }
     res.send("OK")
 })
 
@@ -100,7 +95,13 @@ app.get('/trigger-close-flash', async function (req, res) {
 })
 
 app.get('/trigger-truck-flash', async function (req, res) {
-    await truckTriggerFlash.trigger(()=>res.send("OK"))
+    truckTriggerFlash.trigger(()=>console.log(chalk.blue("TRIGGERED FAR WITH FLASH")))
+    if (MODE === "delay"){
+        setTimeout(()=>closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH")),200)
+    } else {
+        closeTriggerFlash.trigger(()=>console.log("TRIGGERED CLOSE WITH FLASH"))
+    }
+    res.send("OK")
 })
 
 app.get('/trigger-all', async function (req, res) {
