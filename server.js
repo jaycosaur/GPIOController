@@ -81,6 +81,11 @@ app.get('/trigger-truck', async function (req, res) {
 
 app.get('/trigger-far-flash', async function (req, res) {
     farTriggerFlash.trigger(()=>console.log(chalk.blue("TRIGGERED FAR WITH FLASH")))
+    if (MODE === "delay"){
+        setTimeout(()=>closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH")),200)
+    } else {
+        closeTriggerFlash.trigger(()=>res.send("TRIGGERED CLOSE WITH FLASH"))
+    }
     res.send("OK")
 })
 
